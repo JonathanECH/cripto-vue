@@ -103,7 +103,7 @@ const obtenerCotiza = async () => {
     </h1>
 
     <div
-      class="mt-[5rem] max-w-[50rem] max-h-[70vh] lg:max-h-[80vh] overflow-y-auto rounded-[1rem] bg-white px-[2rem] pb-[3rem] pt-[4rem] shadow-[0px_10px_15px_-3px_rgba(0,0,0,0.1)]">
+      class="mt-[5rem] max-w-[50rem] max-h-[70vh] overflow-y-auto rounded-[1rem] bg-white px-[2rem] pb-[3rem] pt-[4rem] shadow-[0px_10px_15px_-3px_rgba(0,0,0,0.1)]">
       <form class="flex flex-col gap-8" @submit.prevent="cotizarCripto">
         <Alerta v-if="mensaje" :tipo="tipoMensaje">
           {{ mensaje }}
@@ -139,7 +139,7 @@ const obtenerCotiza = async () => {
       <article v-if="criptoActual && resultadoCotizacion">
         <h2 class="my-8 text-center text-[2.6rem] font-black">Cotización</h2>
         <div class="grid grid-cols-[1fr_3fr] items-center gap-4">
-          <img class="w-[60%] justify-self-center" :src="criptoActual.image" alt="imagen criptomoneda">
+          <img class="w-[80%] justify-self-center" :src="criptoActual.image" alt="imagen criptomoneda">
           <div>
             <p class="mb-4 text-[1.6rem]">El precio es de: <span class="font-bold">{{ resultadoCotizacion }} {{
               cotizar.moneda.toUpperCase() }}</span></p>
