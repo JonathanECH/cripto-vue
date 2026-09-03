@@ -1,7 +1,11 @@
 <script setup>
-import HelloWorld from './components/HelloWorld.vue'
+
 </script>
 
 <template>
-  <HelloWorld />
+  <section class="contenedor">
+    <h1 class="titulo">Cotizador de
+      <span>Criptomonedas</span>
+    </h1>
+  </section>
 </template>
