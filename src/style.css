@@ -60,6 +60,7 @@ body {
     padding: 1rem;
     border-radius: 1rem;
     font-size: 1.8rem;
+    cursor: pointer;
 }
 .formulario [type="submit"] {
     background-color: var(--primario);
