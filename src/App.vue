@@ -1,6 +1,7 @@
 <script setup>
 import { ref, onMounted, reactive, computed } from 'vue';
 import Alerta from './components/Alerta.vue';
+import Spinner from './components/Spinner.vue';
 
 const monedas = ref([
   { codigo: 'usd', texto: 'Dólar de Estados Unidos' },
@@ -12,9 +13,7 @@ const monedas = ref([
   { codigo: 'aud', texto: 'Dólar Australiano' },
   { codigo: 'brl', texto: 'Real Brasileño' },
   { codigo: 'ars', texto: 'Peso Argentino' },
-  { codigo: 'cop', texto: 'Peso Colombiano' },
   { codigo: 'clp', texto: 'Peso Chileno' },
-  { codigo: 'pen', texto: 'Sol Peruano' },
   { codigo: 'chf', texto: 'Franco Suizo' },
   { codigo: 'cny', texto: 'Yuan Chino' },
 ]);
@@ -22,6 +21,7 @@ const monedas = ref([
 const criptomonedas = ref([]);
 const resultadoCotizacion = ref(null);
 const criptoActual = ref(null);
+const cargando = ref(false);
 const cotizar = reactive({
   moneda: '',
   criptomoneda: '' // Guardará el 'id' de la criptomoneda (ej: 'bitcoin')
@@ -42,8 +42,8 @@ const formatearFecha = (fechaIso) => {
   });
 };
 onMounted(async () => {
-  const url = 'https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=20&page=1&sparkline=false';
   try {
+    const url = 'https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=20&page=1&sparkline=false';
     const res = await fetch(url);
     if (!res.ok) throw new Error('Error al cargar top de criptomonedas');
     criptomonedas.value = await res.json();
@@ -67,10 +67,13 @@ const cotizarCripto = () => {
 };
 
 const obtenerCotiza = async () => {
-  const { moneda, criptomoneda } = cotizar;
-  const url = `https://api.coingecko.com/api/v3/simple/price?ids=${criptomoneda}&vs_currencies=${moneda}&include_24hr_change=true`;
+  cargando.value = true;
+  resultadoCotizacion.value = null;
 
   try {
+    const { moneda, criptomoneda } = cotizar;
+    const url = `https://api.coingecko.com/api/v3/simple/price?ids=${criptomoneda}&vs_currencies=${moneda}&include_24hr_change=true`;
+
     mensaje.value = '';
     const res = await fetch(url);
     if (!res.ok) throw new Error('Error en la cotización');
@@ -81,6 +84,7 @@ const obtenerCotiza = async () => {
 
     tipoMensaje.value = 'success';
     mensaje.value = 'Cotización obtenida con éxito';
+
     setTimeout(() => {
       tipoMensaje.value = '';
       mensaje.value = '';
@@ -93,7 +97,14 @@ const obtenerCotiza = async () => {
       mensaje.value = '';
     }, 3000);
   }
+  finally {
+    cargando.value = false;
+  }
 };
+
+const mostrarResultado = computed(() => {
+  return typeof resultadoCotizacion.value === 'number' && resultadoCotizacion.value !== null;
+})
 </script>
 
 <template>
@@ -136,7 +147,7 @@ const obtenerCotiza = async () => {
           type="submit" value="Cotizar" />
       </form>
 
-      <article v-if="criptoActual && resultadoCotizacion">
+      <article v-if="mostrarResultado">
         <h2 class="my-8 text-center text-[2.6rem] font-black">Cotización</h2>
         <div class="grid grid-cols-[1fr_3fr] items-center gap-4">
           <img class="w-[80%] justify-self-center" :src="criptoActual.image" alt="imagen criptomoneda">
@@ -163,6 +174,7 @@ const obtenerCotiza = async () => {
           </div>
         </div>
       </article>
+      <Spinner v-if="cargando" />
     </div>
   </section>
 </template>
