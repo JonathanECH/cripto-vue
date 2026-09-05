@@ -1,5 +1,6 @@
 <script setup>
 import { reactive } from 'vue';
+import Cotizacion from './components/Cotizacion.vue';
 import Alerta from './components/Alerta.vue';
 import Spinner from './components/Spinner.vue';
 import useCripto from './composables/useCripto.js';
@@ -38,6 +39,7 @@ const cotizarCripto = () => {
         <Alerta v-if="mensaje" :tipo="tipoMensaje">
           {{ mensaje }}
         </Alerta>
+        <!--Alerta.vue-->
 
         <div class="flex flex-col gap-8">
           <label class="text-[#182339]" for="moneda">Moneda:</label>
@@ -66,34 +68,14 @@ const cotizarCripto = () => {
           type="submit" value="Cotizar" />
       </form>
 
-      <article v-if="mostrarResultado">
-        <h2 class="my-8 text-center text-[2.6rem] font-black">Cotización</h2>
-        <div class="grid grid-cols-[1fr_3fr] items-center gap-4">
-          <img class="w-[80%] justify-self-center" :src="criptoActual.image" alt="imagen criptomoneda">
-          <div>
-            <p class="mb-4 text-[1.6rem]">El precio es de: <span class="font-bold">{{ resultadoCotizacion }} {{
-              cotizar.moneda.toUpperCase() }}</span></p>
-            <p class="mb-4 text-[1.6rem]">Precio más alto del día: <span class="font-bold">{{ criptoActual.high_24h }}
-                {{ cotizar.moneda.toUpperCase() }}</span></p>
-            <p class="mb-4 text-[1.6rem]">Precio más bajo del día: <span class="font-bold">{{ criptoActual.low_24h }} {{
-              cotizar.moneda.toUpperCase() }}</span></p>
-            <p class="mb-4 text-[1.6rem]">
-              Variación 24h:
-              <span
-                :class="criptoActual.price_change_percentage_24h >= 0 ? 'text-emerald-500 font-bold' : 'text-red-500 font-bold'">
-                {{ criptoActual.price_change_percentage_24h.toFixed(2) }}%
-              </span>
-            </p>
-            <p class="mb-4 text-[1.6rem]">
-              Última actualización:
-              <span class="font-bold">
-                {{ formatearFecha(criptoActual.last_updated) }}
-              </span>
-            </p>
-          </div>
-        </div>
-      </article>
+      <Cotizacion v-if="mostrarResultado" 
+      :cotizar="cotizar"
+      :resultadoCotizacion="resultadoCotizacion"
+      :criptoActual="criptoActual"
+      :formatearFecha="formatearFecha"/>
+      <!--Cotizacion.vue-->
       <Spinner v-if="cargando" />
+      <!--Spinner.vue-->
     </div>
   </section>
 </template>
