@@ -41,26 +41,46 @@ const cotizarCripto = () => {
         </Alerta>
         <!--Alerta.vue-->
 
-        <div class="flex flex-col gap-8">
-          <label class="text-[#182339]" for="moneda">Moneda:</label>
-          <select id="moneda" v-model="cotizar.moneda"
-            class="cursor-pointer rounded-[1rem] border-0 bg-[#ecebeb] p-4 text-[1.8rem]">
-            <option value="" disabled>-- Seleccionar --</option>
-            <option v-for="m in monedas" :key="m.codigo" :value="m.codigo">
-              {{ m.texto }}
-            </option>
-          </select>
+        <div class="flex flex-col gap-2">
+          <label class="font-bold text-[#182339]" for="moneda">Moneda:</label>
+          <div class="relative w-full">
+            <select id="moneda" v-model="cotizar.moneda"
+              class="w-full cursor-pointer appearance-none rounded-xl border border-gray-200 bg-[#ecebeb] py-3.5 pl-4 pr-10 text-[1.8rem] font-medium text-gray-800 shadow-sm transition-all focus:border-emerald-500 focus:outline-none focus:ring-2 focus:ring-emerald-500/20">
+              <option value="" disabled>-- Seleccionar --</option>
+              <option v-for="m in monedas" :key="m.codigo" :value="m.codigo">
+                {{ m.texto }}
+              </option>
+            </select>
+
+            <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3 text-black">
+              <svg class="h-6 w-6" viewBox="0 0 20 20" fill="currentColor">
+                <path fill-rule="evenodd"
+                  d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z"
+                  clip-rule="evenodd" />
+              </svg>
+            </div>
+          </div>
         </div>
 
-        <div class="flex flex-col gap-8">
-          <label class="text-[#182339]" for="cripto">Criptomoneda:</label>
-          <select id="cripto" v-model="cotizar.criptomoneda"
-            class="cursor-pointer rounded-[1rem] border-0 bg-[#ecebeb] p-4 text-[1.8rem]">
-            <option value="" disabled>-- Seleccionar --</option>
-            <option v-for="cripto in criptomonedas" :key="cripto.id" :value="cripto.id">
-              {{ cripto.name }} ({{ cripto.symbol.toUpperCase() }})
-            </option>
-          </select>
+        <div class="flex flex-col gap-2">
+          <label class="font-bold text-[#182339]" for="cripto">Criptomoneda:</label>
+          <div class="relative w-full">
+            <select id="cripto" v-model="cotizar.criptomoneda"
+              class="w-full cursor-pointer appearance-none rounded-xl border border-gray-200 bg-[#ecebeb] py-3.5 pl-4 pr-10 text-[1.8rem] font-medium text-gray-800 shadow-sm transition-all focus:border-emerald-500 focus:outline-none focus:ring-2 focus:ring-emerald-500/20">
+              <option value="" disabled>-- Seleccionar --</option>
+              <option v-for="cripto in criptomonedas" :key="cripto.id" :value="cripto.id">
+                {{ cripto.name }} ({{ cripto.symbol.toUpperCase() }})
+              </option>
+            </select>
+
+            <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3 text-black">
+              <svg class="h-6 w-6" viewBox="0 0 20 20" fill="currentColor">
+                <path fill-rule="evenodd"
+                  d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z"
+                  clip-rule="evenodd" />
+              </svg>
+            </div>
+          </div>
         </div>
 
         <input
@@ -68,11 +88,8 @@ const cotizarCripto = () => {
           type="submit" value="Cotizar" />
       </form>
 
-      <Cotizacion v-if="mostrarResultado" 
-      :cotizar="cotizar"
-      :resultadoCotizacion="resultadoCotizacion"
-      :criptoActual="criptoActual"
-      :formatearFecha="formatearFecha"/>
+      <Cotizacion v-if="mostrarResultado" :cotizar="cotizar" :resultadoCotizacion="resultadoCotizacion"
+        :criptoActual="criptoActual" :formatearFecha="formatearFecha" />
       <!--Cotizacion.vue-->
       <Spinner v-if="cargando" />
       <!--Spinner.vue-->
